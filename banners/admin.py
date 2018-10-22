@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .forms import BookingPeriodForm, PeriodFormSet
+from .forms import PricePeriodForm, BookingPeriodForm, PeriodFormSet
 from .models import Banner, BookingPeriod, PricePeriod
 
 class BookingPeriodInline(admin.StackedInline):
@@ -10,6 +10,7 @@ class BookingPeriodInline(admin.StackedInline):
 
 class PricePeriodInline(admin.StackedInline):
     model = PricePeriod
+    form = PricePeriodForm
     formset = PeriodFormSet
     extra = 0
 

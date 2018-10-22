@@ -31,4 +31,4 @@ class PricePeriod(models.Model):
             "start": datetime.strftime(self.start_date,"%d-%b-%Y"),
             "end": datetime.strftime(self.end_date,"%d-%b-%Y"),
         }
-        return "{start} to {end}".format(**dates)
+        return "{start} to {end} @ Rs. {price:.2f}".format(price=self.price,**dates)

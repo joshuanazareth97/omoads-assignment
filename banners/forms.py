@@ -8,10 +8,7 @@ def dates_overlap(startA,endA,startB,endB):
     '''
     return (startA <= endB) and (endA >= startB)
 
-class BookingPeriodForm(forms.ModelForm):
-    class Meta:
-        model = BookingPeriod
-        fields = "__all__"
+class PeriodFormValidator(forms.ModelForm):
     def clean(self):
         if not self.has_changed():
             return
@@ -23,15 +20,27 @@ class BookingPeriodForm(forms.ModelForm):
         for period in banner.bookingperiod_set.all():
             if dates_overlap(start_date, end_date,
                 period.start_date, period.end_date):
-                raise forms.ValidationError("Banner unavailable for this time period")
+                if isinstance(self, PricePeriodForm):
+                    raise forms.ValidationError("Trying to set price for period when banner booked")
+                else:
+                    raise forms.ValidationError("Banner unavailable for this time period")
         return self.cleaned_data
+
+class BookingPeriodForm(PeriodFormValidator):
+    class Meta:
+        model = BookingPeriod
+        fields = "__all__"
+
+class PricePeriodForm(PeriodFormValidator):
+    class Meta:
+        model = PricePeriod
+        fields = "__all__"
 
 class PeriodFormSet(forms.BaseInlineFormSet):
     def clean(self):
         super().clean()
         for form in self.forms:
             if not form.has_changed():
-                print("Not changed")
                 continue
             start_date = form.cleaned_data.get('start_date')
             end_date = form.cleaned_data.get('end_date')

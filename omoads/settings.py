@@ -3,7 +3,7 @@ Django settings for omoads project.
 
 Created by Joshua Nazareth
 """
-
+from decouple import config
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -13,10 +13,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'x$wvmi%h4=%@z%8p*2445qy39n^fk3#h#(!-t+j3r=-jqjf4%m'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG',default=False,cast=bool)
 
 ALLOWED_HOSTS = []
 

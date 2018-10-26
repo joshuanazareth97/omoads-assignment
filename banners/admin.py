@@ -16,4 +16,9 @@ class PricePeriodInline(admin.StackedInline):
 
 @admin.register(Banner)
 class BannerAdmin(admin.ModelAdmin):
-    inlines = [BookingPeriodInline, PricePeriodInline]
+    def get_form(self, request, obj=None, **kwargs):
+        if obj is None:
+            self.inlines = []
+        else:
+            self.inlines = [BookingPeriodInline, PricePeriodInline]
+        return super(BannerAdmin, self).get_form(request, obj, **kwargs)
